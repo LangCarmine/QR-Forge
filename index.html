@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Forge · Generador de códigos QR</title>
+<meta name="description" content="Generador de códigos QR personalizados con formas, gradientes, colores y logo.">
+<meta name="theme-color" content="#fafaf9">
+
+<!-- FAVICON SVG inline (sin archivo externo) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c1917'/%3E%3Crect x='5' y='5' width='8' height='8' fill='%23fafaf9'/%3E%3Crect x='19' y='5' width='8' height='8' fill='%23fafaf9'/%3E%3Crect x='5' y='19' width='8' height='8' fill='%23fafaf9'/%3E%3Crect x='19' y='19' width='8' height='8' fill='%23ff6b1a'/%3E%3Crect x='9' y='9' width='4' height='4' fill='%231c1917'/%3E%3Crect x='23' y='9' width='4' height='4' fill='%231c1917'/%3E%3Crect x='9' y='23' width='4' height='4' fill='%231c1917'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <a href="#" class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+          <path d="M14 14h3v3h-3zM21 14v3M14 21h3M21 21h.01"/>
+        </svg>
+      </div>
+      <span class="brand-text">QR Forge</span>
+      <span class="brand-version">v2.2</span>
+    </a>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Cambiar tema">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="https://langcarmine.github.io/MYHUB/" class="header-link">← Volver al hub</a>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Generador de códigos QR</h1>
+    <p>Personaliza formas, colores, gradientes y añade tu logo. Descarga en PNG, JPEG o SVG.</p>
+  </div>
+
+  <div class="layout">
+
+    <div>
+
+      <!-- TIPO DE CÓDIGO -->
+      <div class="card">
+        <div class="card-title">Tipo de código</div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="url">URL</button>
+          <button class="tab" data-tab="wifi">WiFi</button>
+          <button class="tab" data-tab="vcard">Contacto</button>
+          <button class="tab" data-tab="email">Email</button>
+        </div>
+
+        <div class="tab-content active" data-content="url">
+          <div class="field">
+            <label for="urlInput">Enlace o texto</label>
+            <input type="text" id="urlInput" placeholder="https://ejemplo.com">
+          </div>
+        </div>
+
+        <div class="tab-content" data-content="wifi">
+          <div class="field">
+            <label for="wifiSSID">Nombre de la red (SSID)</label>
+            <input type="text" id="wifiSSID" placeholder="MiRedWiFi">
+          </div>
+          <div class="field">
+            <label for="wifiPass">Contraseña <span class="opt">opcional</span></label>
+            <input type="text" id="wifiPass" placeholder="Contraseña de la red">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="wifiEnc">Seguridad</label>
+              <select id="wifiEnc">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Sin contraseña</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="wifiHidden">Red oculta</label>
+              <select id="wifiHidden">
+                <option value="false">No</option>
+                <option value="true">Sí</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" data-content="vcard">
+          <div class="field-row">
+            <div class="field">
+              <label for="vcFirst">Nombre</label>
+              <input type="text" id="vcFirst" placeholder="Juan">
+            </div>
+            <div class="field">
+              <label for="vcLast">Apellido</label>
+              <input type="text" id="vcLast" placeholder="Pérez">
+            </div>
+          </div>
+          <div class="field">
+            <label for="vcOrg">Empresa <span class="opt">opcional</span></label>
+            <input type="text" id="vcOrg" placeholder="Mi Empresa">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="vcPhone">Teléfono <span class="opt">opcional</span></label>
+              <input type="text" id="vcPhone" placeholder="+52 123 456 7890">
+            </div>
+            <div class="field">
+              <label for="vcEmail">Email <span class="opt">opcional</span></label>
+              <input type="email" id="vcEmail" placeholder="juan@ejemplo.com">
+            </div>
+          </div>
+          <div class="field">
+            <label for="vcWeb">Sitio web <span class="opt">opcional</span></label>
+            <input type="text" id="vcWeb" placeholder="https://ejemplo.com">
+          </div>
+        </div>
+
+        <div class="tab-content" data-content="email">
+          <div class="field">
+            <label for="emailTo">Para</label>
+            <input type="email" id="emailTo" placeholder="destinatario@ejemplo.com">
+          </div>
+          <div class="field">
+            <label for="emailSubject">Asunto <span class="opt">opcional</span></label>
+            <input type="text" id="emailSubject" placeholder="Asunto del correo">
+          </div>
+          <div class="field">
+            <label for="emailBody">Mensaje <span class="opt">opcional</span></label>
+            <textarea id="emailBody" placeholder="Cuerpo del correo..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMAS -->
+      <div class="card">
+        <div class="card-title">Forma de los módulos</div>
+        <div class="shape-grid" id="dotsShapeGrid">
+          <button class="shape-opt active" data-shape="square" data-type="dots">
+            <svg viewBox="0 0 32 32"><rect x="4" y="4" width="6" height="6"/><rect x="13" y="4" width="6" height="6"/><rect x="22" y="4" width="6" height="6"/><rect x="4" y="13" width="6" height="6"/><rect x="13" y="13" width="6" height="6"/><rect x="22" y="13" width="6" height="6"/><rect x="4" y="22" width="6" height="6"/><rect x="13" y="22" width="6" height="6"/><rect x="22" y="22" width="6" height="6"/></svg>
+            Cuadrados
+          </button>
+          <button class="shape-opt" data-shape="rounded" data-type="dots">
+            <svg viewBox="0 0 32 32"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="13" y="4" width="6" height="6" rx="2"/><rect x="22" y="4" width="6" height="6" rx="2"/><rect x="4" y="13" width="6" height="6" rx="2"/><rect x="13" y="13" width="6" height="6" rx="2"/><rect x="22" y="13" width="6" height="6" rx="2"/><rect x="4" y="22" width="6" height="6" rx="2"/><rect x="13" y="22" width="6" height="6" rx="2"/><rect x="22" y="22" width="6" height="6" rx="2"/></svg>
+            Redondeados
+          </button>
+          <button class="shape-opt" data-shape="dots" data-type="dots">
+            <svg viewBox="0 0 32 32"><circle cx="7" cy="7" r="3"/><circle cx="16" cy="7" r="3"/><circle cx="25" cy="7" r="3"/><circle cx="7" cy="16" r="3"/><circle cx="16" cy="16" r="3"/><circle cx="25" cy="16" r="3"/><circle cx="7" cy="25" r="3"/><circle cx="16" cy="25" r="3"/><circle cx="25" cy="25" r="3"/></svg>
+            Puntos
+          </button>
+          <button class="shape-opt" data-shape="classy" data-type="dots">
+            <svg viewBox="0 0 32 32"><path d="M4 13 Q4 4 13 4 H13 V10 H10 Q10 10 10 13 Z"/><path d="M22 4 Q31 4 31 13 V13 H25 V10 Q25 10 22 10 Z"/><path d="M31 22 Q31 31 22 31 V25 H25 Q25 25 25 22 Z"/><path d="M13 31 Q4 31 4 22 H10 V25 Q10 25 13 25 Z"/></svg>
+            Classy
+          </button>
+          <button class="shape-opt" data-shape="classy-rounded" data-type="dots">
+            <svg viewBox="0 0 32 32"><circle cx="7" cy="7" r="3"/><circle cx="16" cy="7" r="3"/><circle cx="25" cy="7" r="3"/><circle cx="7" cy="16" r="3"/><circle cx="16" cy="16" r="3"/><circle cx="25" cy="16" r="3"/><circle cx="7" cy="25" r="3"/><circle cx="16" cy="25" r="3"/><circle cx="25" cy="25" r="3"/></svg>
+            Suave
+          </button>
+          <button class="shape-opt" data-shape="extra-rounded" data-type="dots">
+            <svg viewBox="0 0 32 32"><rect x="4" y="4" width="6" height="6" rx="3"/><rect x="13" y="4" width="6" height="6" rx="3"/><rect x="22" y="4" width="6" height="6" rx="3"/><rect x="4" y="13" width="6" height="6" rx="3"/><rect x="13" y="13" width="6" height="6" rx="3"/><rect x="22" y="13" width="6" height="6" rx="3"/><rect x="4" y="22" width="6" height="6" rx="3"/><rect x="13" y="22" width="6" height="6" rx="3"/><rect x="22" y="22" width="6" height="6" rx="3"/></svg>
+            Muy redondos
+          </button>
+        </div>
+
+        <div class="card-title" style="margin-top:22px;">Forma de las esquinas</div>
+        <div class="shape-grid" id="cornerSquareGrid">
+          <button class="shape-opt active" data-shape="square" data-type="cornerSquare">
+            <svg viewBox="0 0 32 32"><rect x="4" y="4" width="20" height="20" rx="0" stroke-width="2"/><rect x="9" y="9" width="10" height="10" rx="0" stroke-width="2"/></svg>
+            Cuadradas
+          </button>
+          <button class="shape-opt" data-shape="dot" data-type="cornerSquare">
+            <svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="10" stroke-width="2"/><circle cx="14" cy="14" r="5" stroke-width="2"/></svg>
+            Círculo
+          </button>
+          <button class="shape-opt" data-shape="extra-rounded" data-type="cornerSquare">
+            <svg viewBox="0 0 32 32"><rect x="4" y="4" width="20" height="20" rx="6" stroke-width="2"/><rect x="9" y="9" width="10" height="10" rx="3" stroke-width="2"/></svg>
+            Redondeadas
+          </button>
+        </div>
+
+        <div class="card-title" style="margin-top:22px;">Forma interior de las esquinas</div>
+        <div class="shape-grid" id="cornerDotGrid">
+          <button class="shape-opt active" data-shape="square" data-type="cornerDot">
+            <svg viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="0"/></svg>
+            Cuadro
+          </button>
+          <button class="shape-opt" data-shape="dot" data-type="cornerDot">
+            <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="8"/></svg>
+            Círculo
+          </button>
+          <button class="shape-opt" data-shape="rounded" data-type="cornerDot">
+            <svg viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="5"/></svg>
+            Redondo
+          </button>
+        </div>
+      </div>
+
+      <!-- GRADIENTES -->
+      <div class="card">
+        <div class="card-title">Gradientes</div>
+
+        <div class="toggle-row">
+          <label for="gradientToggle">Aplicar gradiente a los puntos</label>
+          <button class="toggle-switch" id="gradientToggle" type="button"></button>
+        </div>
+
+        <div id="gradientOptions" style="display:none;">
+          <div class="color-row" style="margin-bottom:12px;">
+            <div class="color-field">
+              <label class="small-label">Color inicial</label>
+              <div class="color-input-wrap">
+                <div class="color-swatch" id="gradA_Swatch" style="background:#ff6b1a;">
+                  <input type="color" id="gradA_Color" value="#ff6b1a">
+                </div>
+                <input type="text" class="color-hex" id="gradA_Hex" value="#FF6B1A" maxlength="7">
+              </div>
+            </div>
+            <div class="color-field">
+              <label class="small-label">Color final</label>
+              <div class="color-input-wrap">
+                <div class="color-swatch" id="gradB_Swatch" style="background:#ff2e88;">
+                  <input type="color" id="gradB_Color" value="#ff2e88">
+                </div>
+                <input type="text" class="color-hex" id="gradB_Hex" value="#FF2E88" maxlength="7">
+              </div>
+            </div>
+          </div>
+
+          <div class="gradient-preview show" id="gradientPreview" style="background:linear-gradient(135deg, #ff6b1a, #ff2e88);"></div>
+
+          <div class="field" style="margin-top:14px;">
+            <label>Tipo de gradiente</label>
+            <div class="shape-grid" id="gradientTypeGrid" style="grid-template-columns:1fr 1fr;">
+              <button class="shape-opt active" data-shape="linear" data-type="gradient">
+                <svg viewBox="0 0 32 32"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff6b1a"/><stop offset="100%" stop-color="#ff2e88"/></linearGradient></defs><rect x="4" y="4" width="24" height="24" rx="4" fill="url(#lg1)"/></svg>
+                Lineal
+              </button>
+              <button class="shape-opt" data-shape="radial" data-type="gradient">
+                <svg viewBox="0 0 32 32"><defs><radialGradient id="rg1" cx="0.5" cy="0.5"><stop offset="0%" stop-color="#ff6b1a"/><stop offset="100%" stop-color="#ff2e88"/></radialGradient></defs><rect x="4" y="4" width="24" height="24" rx="4" fill="url(#rg1)"/></svg>
+                Radial
+              </button>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:14px;">
+            <label for="gradientRotation">Rotación del gradiente</label>
+            <div class="slider-row">
+              <input type="range" id="gradientRotation" min="0" max="360" value="45">
+              <span class="slider-value" id="gradientRotationValue">45°</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLORES -->
+      <div class="card">
+        <div class="card-title">Colores</div>
+
+        <div class="color-row" style="margin-bottom:16px;">
+          <div class="color-field">
+            <label class="small-label">Fondo</label>
+            <div class="color-input-wrap">
+              <div class="color-swatch" id="bgSwatch" style="background:#ffffff;">
+                <input type="color" id="bgColor" value="#ffffff">
+              </div>
+              <input type="text" class="color-hex" id="bgHex" value="#FFFFFF" maxlength="7">
+            </div>
+          </div>
+          <div class="color-field">
+            <label class="small-label">Puntos (sólido)</label>
+            <div class="color-input-wrap">
+              <div class="color-swatch" id="dotsSwatch" style="background:#1c1917;">
+                <input type="color" id="dotsColor" value="#1c1917">
+              </div>
+              <input type="text" class="color-hex" id="dotsHex" value="#1C1917" maxlength="7">
+            </div>
+          </div>
+        </div>
+
+        <div class="color-row">
+          <div class="color-field">
+            <label class="small-label">Esquinas</label>
+            <div class="color-input-wrap">
+              <div class="color-swatch" id="csSwatch" style="background:#1c1917;">
+                <input type="color" id="csColor" value="#1c1917">
+              </div>
+              <input type="text" class="color-hex" id="csHex" value="#1C1917" maxlength="7">
+            </div>
+          </div>
+          <div class="color-field">
+            <label class="small-label">Interior esquinas</label>
+            <div class="color-input-wrap">
+              <div class="color-swatch" id="cdSwatch" style="background:#1c1917;">
+                <input type="color" id="cdColor" value="#1c1917">
+              </div>
+              <input type="text" class="color-hex" id="cdHex" value="#1C1917" maxlength="7">
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:16px;">
+          <label for="marginRange">Margen</label>
+          <div class="slider-row">
+            <input type="range" id="marginRange" min="0" max="40" value="10">
+            <span class="slider-value" id="marginValue">10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CORRECCIÓN Y TAMAÑO -->
+      <div class="card">
+        <div class="card-title">Corrección y tamaño</div>
+
+        <div class="field">
+          <label for="eccSelect">Nivel de corrección de errores</label>
+          <select id="eccSelect">
+            <option value="L">L · Bajo (7%)</option>
+            <option value="M">M · Medio (15%)</option>
+            <option value="Q">Q · Alto (25%)</option>
+            <option value="H" selected>H · Máximo (30%) — recomendado con logo</option>
+          </select>
+          <p class="helper">Más corrección = QR más denso pero resiste manchas, arrugas o el logo central.</p>
+        </div>
+
+        <div class="field">
+          <label for="exportSize">Tamaño de descarga</label>
+          <div class="slider-row">
+            <input type="range" id="exportSize" min="256" max="4096" step="128" value="1024">
+            <span class="slider-value" id="exportSizeValue">1024px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGO -->
+      <div class="card">
+        <div class="card-title">Logo central <span class="opt-inline">opcional</span></div>
+        <label for="logoInput" class="logo-upload" id="logoUpload">
+          <div class="logo-preview" id="logoPreview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="logo-text">
+            <div class="primary" id="logoPrimary">Subir imagen</div>
+            <div class="secondary" id="logoSecondary">PNG, JPG o SVG · máx 2MB</div>
+          </div>
+          <input type="file" id="logoInput" accept="image/*" style="display:none;">
+          <button type="button" class="logo-clear" id="logoClear" style="display:none;" title="Quitar logo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </label>
+        <div class="field" id="logoSizeField" style="margin-top:14px;display:none;">
+          <label for="logoSizeRange">Tamaño del logo</label>
+          <div class="slider-row">
+            <input type="range" id="logoSizeRange" min="10" max="45" value="25">
+            <span class="slider-value" id="logoSizeValue">25%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-card">
+      <div class="card-title">Vista previa</div>
+
+      <div class="status" id="status"></div>
+
+      <div class="preview-stage">
+        <div id="qrContainer"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn secondary" id="btnPng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          PNG
+        </button>
+        <button class="btn secondary" id="btnSvg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          SVG
+        </button>
+      </div>
+
+      <button class="btn" id="btnJpeg" style="width:100%;margin-top:8px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar JPEG
+      </button>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>© 2025 QR Forge · Hecho por <a href="https://langcarmine.github.io/MYHUB/">LangOsta</a></p>
+  </footer>
+
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- LIBRERÍA QR-CODE-STYLING LOCAL -->
+<script src="qr-code-styling.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
